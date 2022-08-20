@@ -1,4 +1,5 @@
-def decrypt(msg):
+#decrypting with a shift cipher by exhaustion -Written by by Nick
+def shift_decrypt(msg):
     '''
     Prints out all 25 iterations of our message using a shift cipher
     (I feel comfortable brute forcing this since 25 iterations is not the most
@@ -39,3 +40,38 @@ def decrypt(msg):
 
         print(f"KEY {key} ({alpha[key]}): {out} ")
     return None
+
+#decrypting with a affine cipher -Written by Carson
+def affine_decrypt_key(encrypted_message, key):
+    alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    print('ENCRYPTED MESSAGE: ' + encrypted_message)
+
+    #blank output message
+    decrypted_message = ''
+
+    for encrypted_letter in encrypted_message:
+
+        #get the numerical value of encrypted letter
+        index = alpha.find(encrypted_letter)
+
+        #blank candidates array
+        candidates = []
+
+        #fill up candidates for reverse modulo operation
+        for i in range(0,key[0]):
+            candidates.append(index + i*26)
+
+        #subtract key[1] (as per the affine key)
+        candidates = [x - key[1] for x in candidates]
+
+        #loop through our candidates
+        for candidate in candidates:
+
+            #test if they are a multiple of key[0] (as they were generated using key[0] * an integer
+            #there should only be one
+            if(candidate % key[0] == 0):
+
+                #append decrypted letter to decypted message
+                decrypted_message = decrypted_message + alpha[int(candidate / key[0])]
+
+    print('DECRYPTED MESSAGE: ' + decrypted_message)
