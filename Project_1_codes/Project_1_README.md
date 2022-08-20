@@ -1,6 +1,5 @@
 To run shift decrypt make a new .py file and do
 ```
-<<<<<<< HEAD
 import simpledecrypt as sd
 ```
 To decrypt a shift cipher do the following:
