@@ -1,9 +1,3 @@
-To run shift decrypt make a new .py file and do
-```
-import simpledecrypt as sd
-```
-And example of how to use this package would be as follows:
-```
 import simpledecrypt as sd
 
 msg1 = 'PBGLMHGVANKVABEE'
@@ -14,5 +8,3 @@ sd.decrypt_affine_key(msg2, [7,2])
 
 msg3 = 'GNNIMUKSUIPYVANGSUNYPYKUSCNUSBUHLQNYVOUPYKNGOYQPRVYNXGVRGNWGNWGNDIRYA'
 sd.decrypt_affine_no_key(msg3, 3)
-
-```
