@@ -16,3 +16,4 @@ msg3 = 'GNNIMUKSUIPYVANGSUNYPYKUSCNUSBUHLQNYVOUPYKNGOYQPRVYNXGVRGNWGNWGNDIRYA'
 sd.decrypt_affine_no_key(msg3, 3)
 
 ```
+The file letter_freq.py is a way you can find the amount of times a letter pops up in a message. This is used for question 7.
