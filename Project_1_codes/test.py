@@ -1,7 +1,7 @@
 import simpledecrypt as sd
 
 #Test case for 6
-msg1 = 'PBGLMHGVANKVABEE'
+msg1 = 'DBMXLKBLXABZAXLMTZTBGLMMAXPBGWGHMPBMABM - PBGLMHGVANKVABEE'
 sd.shift_decrypt(msg1)
 #Test case for 5
 msg2 = "AZEPCBBGYYCGXCPXXWPEIWREGYYCGXFZCPXWPE"
