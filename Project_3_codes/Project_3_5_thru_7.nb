@@ -22,6 +22,6 @@ str2num["ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
 str2num["IHateMATLAB"]
 str2num["RIVEST"]
 str2num["VigenereCipher"]
-str2num["ADTRIsTheBestBand"]
+
 
 (*PROBLEM #7*)
