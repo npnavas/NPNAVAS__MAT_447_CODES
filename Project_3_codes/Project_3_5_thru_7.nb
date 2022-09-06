@@ -1,0 +1,27 @@
+(*PROBLEM #5*)
+num2str[arr_] := FromCharacterCode[arr + 65]
+(*
+  in: arr_ = array of numbers to be represented in the English alphabet
+out: string of letters
+*)
+
+num2str[{0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+  18, 19, 20, 21, 22, 23, 24, 25}]
+num2str[{15, 24, 19, 7, 14, 13, 8, 18, 1, 4, 19, 19, 4, 17}]
+num2str[{6, 17, 4, 4, 19, 8, 13, 6, 18}]
+num2str[{0, 3, 19, 17, 8, 18, 19, 7, 4, 1, 4, 18, 19, 1, 0, 13, 3}]
+
+(*PROBLEM #6*)
+str2num[string_] := ToCharacterCode[ToUpperCase[string]] - 65
+(*
+  in: string_ = String of the 26 English letters
+out: Array of numerical representation of said letters
+*)
+
+str2num["ABCDEFGHIJKLMNOPQRSTUVWXYZ"]
+str2num["IHateMATLAB"]
+str2num["RIVEST"]
+str2num["VigenereCipher"]
+str2num["ADTRIsTheBestBand"]
+
+(*PROBLEM #7*)
