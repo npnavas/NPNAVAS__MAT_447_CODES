@@ -142,7 +142,7 @@ num2str[ct]
 
 (*7C*)
 (*ENCRYPTING*)
-person = "Ramanujan" (*"GodfreyHaroldHardy"*);
+person = "GodfreyHaroldHardy";
 person = str2num[person];
 For[n = 1, n <= Length[person], n++,
  If[Mod[n, 6] == 1, person[[n]] = Mod[person[[n]] + 13, 26], 0];
