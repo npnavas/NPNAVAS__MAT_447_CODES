@@ -1,4 +1,8 @@
-(*PROBLEM #5*)num2str[arr_] := FromCharacterCode[arr + 65]
+(*NICK NAVAS PROJECT 3 CODE*)
+(*Sorry if the code is messy/slow I'm more knowledgable on Python*)
+
+(*PROBLEM #5*)
+num2str[arr_] := FromCharacterCode[arr + 65]
 (*in:arr_=array of numbers to be represented in the English alphabet \
 out:string of letters*)
 
@@ -20,16 +24,131 @@ str2num["VigenereCipher"];
 str2num["ADTRIsTheBestBand"];
 
 (*PROBLEM #7*)
-ciphertext = "UYIBWEGUSSIRGAQOMLFUEFMEFNQJRRAXDVXYRLRPVUJYDFLVFUUEAZGBTJWLFOMMGCNLUUCKUUFJJKUYIPVUZYMOXRASFIMETBQXEJAIFBKVACGTEKNFXBXKUYNFWKUYEBMUUYIBWWBLMTLFENFJQVGBQGMWGBNFWKCODFQRGBQNEKVWUBRZANTFAFEFPTMEPYTJWTUUDBGKRLIBWRFVQBYKVZGMEEQWMOHZQUEIMJZCZELVNFIBCJZUPFXYRJAJRKGBMULZFZDJIEQUZEGFYFMCSINNASPZGNXFAFBXIBWRAUBQVVPCMCPPZIDFTFJYDGYCZUFIIDNNUDMRANTBRYRQMTEEQNTBXYVMBSSKRAQSEDNHGKEEEYMMPPUUPOEKHLMMKVACGTMEGBQTIEFYFISLTBZPXKBNTFIOGYZUEEQHAULZAAXJOVFIQGJVPNUWICLNTBXKUYSSIRGYEUQRGBQNEKVWUBRJUUPJX";
+(*7A*)
+ciphertext =
+  "UYIBWEGUSSIRGAQOMLFUEFMEFNQJRRAXDVXYRLRPVUJYDFLVFUUEAZGBTJWLFOMMGCN\
+LUUCKUUFJJKUYIPVUZYMOXRASFIMETBQXEJAIFBKVACGTEKNFXBXKUYNFWKUYEBMUUYIBW\
+WBLMTLFENFJQVGBQGMWGBNFWKCODFQRGBQNEKVWUBRZANTFAFEFPTMEPYTJWTUUDBGKRLI\
+BWRFVQBYKVZGMEEQWMOHZQUEIMJZCZELVNFIBCJZUPFXYRJAJRKGBMULZFZDJIEQUZEGFY\
+FMCSINNASPZGNXFAFBXIBWRAUBQVVPCMCPPZIDFTFJYDGYCZUFIIDNNUDMRANTBRYRQMTE\
+EQNTBXYVMBSSKRAQSEDNHGKEEEYMMPPUUPOEKHLMMKVACGTMEGBQTIEFYFISLTBZPXKBNT\
+FIOGYZUEEQHAULZAAXJOVFIQGJVPNUWICLNTBXKUYSSIRGYEUQRGBQNEKVWUBRJUUPJX";
 old = "HELLO";
 strlen = StringLength[ciphertext];
 ct = str2num[ciphertext];
 ca = {};
 ca6 = {};
+ca5mod6 = {};
 old2 = str2num[ciphertext];
 For[s = 1, s < strlen, s++, new = RotateRight[old2, 1];
  c = Count[new - ct, 0]; ca = Insert[ca, {s, c}, -1];
- If[Divisible[s, 6], ca6 = Insert[ca6, {s, c}, -1], 0]; old2 = new;]
-Grid[Sort[ca, #1[[2]] > #2[[2]] &]];
+ If[Divisible[s, 6], ca6 = Insert[ca6, {s, c}, -1], 0];
+ If[Mod[s, 6] == 5, ca5mod6 = Insert[ca5mod6, {s, c}, -1], 0];
+ old2 = new;]
+Print["### Table in the form of (shift, coincidences) ###"]
+Grid[Sort[ca, #1[[2]] > #2[[2]] &]]
+Print["###############################################"]
 Grid[Sort[ca6, #1[[2]] > #2[[2]] &]];
-ListPlot[{Labeled[ca, ""], Labeled[ca6, ""]}, Filling -> Axis, PlotLegends -> {"Total", "Multiples of 6"}]
+
+ListPlot[{Labeled[ca, ""], Labeled[ca6, ""], Labeled[ca5mod6, ""]},
+ Filling -> Axis,
+ PlotLegends -> {"Total", "Multiples of 6", "equiv 5 mod6"},
+ AxesLabel -> {"Shift", "Number of Coincidences"},
+ PlotLabel -> "Coincidences Against Shift"]
+Print["From here I believe that the key has to have length of 6. Due \
+to a lot of peaks in coincidences showing up at multiples of 6. \
+Another reason I believe is that the rest of the peaks are around \
+numbers that have form 5 mod 6 which leads me to believe that since \
+this is the largest remainder we can have in mod 6. More might need \
+to be looked at with that argument."]
+
+(*7B*)
+(* FINDING KEY *)
+letterfreqvector = {0.082, 0.015, 0.028, 0.043, 0.127, 0.022, 0.020,
+   0.061, 0.070, 0.002, 0.008, 0.040, 0.024, 0.067, 0.075, 0.019,
+   0.001, 0.060, 0.063, 0.091, 0.028, 0.010, 0.023, 0.001, 0.020,
+   0.001};
+firl0 = {};
+sel0 = {};
+thl0 = {};
+fol0 = {};
+fil0 = {};
+sil0 = {};
+
+For[i = 0, i < strlen, i++,
+ If[Mod[i, 6] == 1, firl0 = Insert[firl0, ct[[i]], -1], 0];
+ If[Mod[i, 6] == 2, sel0 = Insert[sel0, ct[[i]], -1], 0];
+ If[Mod[i, 6] == 3, thl0 = Insert[thl0, ct[[i]], -1], 0];
+ If[Mod[i, 6] == 4, fol0 = Insert[fol0, ct[[i]], -1], 0];
+ If[Mod[i, 6] == 5, fil0 = Insert[fil0, ct[[i]], -1], 0];
+ If[Mod[i, 6] == 0, sil0 = Insert[sil0, ct[[i]], -1], 0];]
+
+Length[firl0];
+vfirl0 = {};
+vsel0 = {};
+vthl0 = {};
+vfol0 = {};
+vfil0 = {};
+vsil0 = {};
+
+For[i = 0, i < 26, i++ , vfirl0 = Insert[vfirl0, Count[firl0, i], -1];
+  vsel0 = Insert[vsel0 , Count[sel0 , i], -1];
+ vthl0 = Insert[vthl0, Count[thl0, i], -1];
+ vfol0 = Insert[vfol0, Count[fol0 , i], -1];
+ vfil0 = Insert[vfil0, Count[fil0, i], -1];
+ vsil0 = Insert[vsil0, Count[sil0 , i], -1];]
+w1 = vfirl0/26 ;
+w2 = vsel0/26 ;
+w3 = vthl0/26 ;
+w4 = vfol0 /26;
+w5 = vfil0/26 ;
+w6 = vsil0/26 ;
+
+letter1 = {};
+letter2 = {};
+letter3 = {};
+letter4 = {};
+letter5 = {};
+letter6 = {};
+For[j = 0, j < 26, j++,
+ letter1 = Insert[letter1, {j, w1.letterfreqvector}, -1];
+ letter2 = Insert[letter2, {j, w2.letterfreqvector}, -1];
+ letter3 = Insert[letter3, {j, w3.letterfreqvector}, -1];
+ letter4 = Insert[letter4, {j, w4.letterfreqvector}, -1];
+ letter5 = Insert[letter5, {j, w5.letterfreqvector}, -1];
+ letter6 = Insert[letter6, {j, w6.letterfreqvector}, -1];
+ letterfreqvector = RotateRight[letterfreqvector, 1]]
+Length[letter1];
+letter1 = Sort[letter1, #1[[2]] > #2[[2]] &];
+letter2 = Sort[letter2, #1[[2]] > #2[[2]] &];
+letter3 = Sort[letter3, #1[[2]] > #2[[2]] &];
+letter4 = Sort[letter4, #1[[2]] > #2[[2]] &];
+letter5 = Sort[letter5, #1[[2]] > #2[[2]] &];
+letter6 = Sort[letter6, #1[[2]] > #2[[2]] &];
+Print["Key assuming length = 6: " , num2str[letter1[[1]][[1]]],
+ num2str[letter2[[1]][[1]]], num2str[letter3[[1]][[1]]],
+ num2str[letter4[[1]][[1]]], num2str[letter5[[1]][[1]]],
+ num2str[letter6[[1]][[1]]] ]
+
+(*DECRYPTING*)
+For[n = 1, n <= Length[ct], n++,
+ If[Mod[n, 6] == 1, ct[[n]] = Mod[ct[[n]] - 13, 26], 0];
+ If[Mod[n, 6] == 2, ct[[n]] = Mod[ct[[n]] - 20, 26], 0];
+ If[Mod[n, 6] == 3, ct[[n]] = Mod[ct[[n]] - 12, 26], 0];
+ If[Mod[n, 6] == 4, ct[[n]] = Mod[ct[[n]] - 1, 26], 0];
+ If[Mod[n, 6] == 5, ct[[n]] = Mod[ct[[n]] - 4, 26], 0];
+ If[Mod[n, 6] == 0, ct[[n]] = Mod[ct[[n]] - 17, 26], 0];]
+num2str[ct]
+
+(*7C*)
+(*ENCRYPTING*)
+person = "Ramanujan" (*"GodfreyHaroldHardy"*);
+person = str2num[person];
+For[n = 1, n <= Length[person], n++,
+ If[Mod[n, 6] == 1, person[[n]] = Mod[person[[n]] + 13, 26], 0];
+ If[Mod[n, 6] == 2, person[[n]] = Mod[person[[n]] + 20, 26], 0];
+ If[Mod[n, 6] == 3, person[[n]] = Mod[person[[n]] + 12, 26], 0];
+ If[Mod[n, 6] == 4, person[[n]] = Mod[person[[n]] + 1, 26], 0];
+ If[Mod[n, 6] == 5, person[[n]] = Mod[person[[n]] + 4, 26], 0];
+ If[Mod[n, 6] == 0, person[[n]] = Mod[person[[n]] + 17, 26], 0];]
+num2str[person]
