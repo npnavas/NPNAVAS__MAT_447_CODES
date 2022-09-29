@@ -1,0 +1,58 @@
+(*PROBLEM 4*)
+findRSApq[n0_, e0_] :=
+ Module[{e = e0, n = n0 }, aArray = ContinuedFraction[e/n];
+  pk = {aArray[[1]], aArray[[2]]*aArray[[1]] + 1};
+  qk = {1, aArray[[2]]}; gammak = {}; possibleGamma = {}; tester = 0;
+  output = {};
+  msg = "done";
+  For[k = 3, k <= Length[aArray], k++,
+   pk = Insert[pk, (aArray[[k]] pk[[k - 1]]) + pk[[k - 2]], -1] ;
+   qk = Insert[qk, (aArray[[k]] qk[[k - 1]]) + qk[[k - 2]], -1];];
+  Ck = pk/qk ;
+  For[k = 1, k <= Length[aArray], k++,
+   If[Ck[[k]] != 0,
+     gammak = Insert[gammak, (e qk[[k]] - 1)/(pk[[k]]), -1]]; ];
+  For[j = 1, j <= Length[gammak], j++,
+   If[IntegerQ[gammak[[j]]] == True,
+     possibleGamma = Insert[possibleGamma, gammak[[j]], -1], 0];];
+  For[l = 1, l <= Length[possibleGamma], l++,
+    b = -(n - possibleGamma[[l]] + 1); c = n;
+    sol1 = (1/2) (-b + Sqrt[b^2 - 4 c]);
+    sol2 = (1/2) (-b - Sqrt[b^2 - 4 c]);
+    If[IntegerQ[sol1] == True && IntegerQ[sol2] == True, {tester = 1,
+      output = {sol1, sol2}}]] If[tester != 0, 1,
+    output = "Could not find primes p and q"]; output]
+findRSApq[9301, 6067](*Should give 131,71*)
+findRSApq[40918284, 55] (*Should fail test since n is made up of not \
+primes*)
+findRSApq[199319989752662759279209, 5] (*Should fail since there's no \
+such convergent that allows |k/d - e/n|< 1/(2d^2)*)
+
+(*PROBLEM 5*)
+str2RSAPT[
+  str_] := (s =
+   StringReplace[
+    ToUpperCase[str], { PunctuationCharacter -> "", " " -> ""}];
+  s = ToCharacterCode[s] - 64; s = IntegerString[s, 10, 2];
+  s = StringJoin[s])
+str2RSAPT["Really? Mathematica again? Why can't we use an actual \
+language like python? This makes me a bit sad. :("]
+str2RSAPT["Nick"]
+
+(*PROBLEM 6*)
+encryptRSA[pt_, n_, e_] := PowerMod[ToExpression[str2RSAPT[pt]], e, n]
+encryptRSA["Nick", 1201027 * 145723, 1309]
+
+(*PROBLEM 7*)
+decryptRSAPubOnly[ct_, n_, e_] := (d = ModularInverse[e, EulerPhi[n]];
+   pt = PowerMod[ct, d, n];
+  If[OddQ[pt] == True,
+   pt = ToExpression[
+     Apply[StringJoin,
+      Partition[Characters[ToString[pt]], 2, 2, 2, {}], {1}]],
+   pt = ToExpression[
+     Apply[StringJoin,
+      Partition[Characters[ToString[pt]], 2, 2, 1, {}], {1}]]];
+  FromCharacterCode[pt + 64])
+decryptRSAPubOnly[102624265650629462932986, 199319989752662759279209,
+  5]
