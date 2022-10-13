@@ -1,0 +1,53 @@
+(*PROBLEM 4*)
+millerRabin[n_,
+  t_] := (If[n == 2, Return["Is Prime"]];
+   If[Mod[n, 2] == 0, Return["This is an even number -> Composite"]];
+   fact = FactorInteger[n - 1];
+   k = fact[[1, 2]];
+   m = (n - 1) 2^(-k);
+   Do[a = RandomInteger[{2, n - 1}]; b = PowerMod[a, m, n];
+    If[b != 1,
+     For[j = 0, r < k, j++, If[b == n - 1, Continue[]];
+      b = Mod[b^2, n];];
+     If[b != n - 1, Return["NOT PRIME OR NEEDS MORE ITERATIONS"],
+      Return["Probably Prime"]];];, {t}]) StringForm[
+   "The probability of a number being prime is given by 4^(-``)", t]
+Print["PROBLEM 4 This section has format MR-Test, PrimeQ[n]"]
+Print["##################################################"]
+millerRabin[15, 15]
+PrimeQ[15]
+Print["##################################################"]
+millerRabin[11, 15]
+PrimeQ[11]
+Print["##################################################"]
+millerRabin[960871, 10000]
+PrimeQ[960871]
+Print["##################################################"]
+millerRabin[935051, 10000]
+PrimeQ[935051]
+Print["##################################################"]
+millerRabin[938244179225161, 1000000]
+PrimeQ[938244179225161]
+Print["##################################################"]
+Print["##################################################"]
+(*PROBLEM 5*)
+solovayStrassen[n_, t_] := (check = "Probably_Prime";
+  Do[a = RandomInteger[{2, n - 1}];
+   If[Mod[JacobiSymbol[a, n], n] !=
+     PowerMod[a, (n - 1)/2, n], {check = "Not_Prime", Break[]},
+    Continue[]];, {t}];
+  If[check != "Probably_Prime", 0,
+   Print[StringForm["Probability of being prime: 4^(-``)", t]]];
+  Return[check])
+Print["PROBLEM 5"]
+Print["##################################################"]
+solovayStrassen[15, 11]
+Print["##################################################"]
+solovayStrassen[11, 2]
+Print["##################################################"]
+solovayStrassen[9031942789, 4]
+Print["##################################################"]
+solovayStrassen[9031942789, 150]
+Print["##################################################"]
+solovayStrassen[6082995131, 20]
+Print["##################################################"]
